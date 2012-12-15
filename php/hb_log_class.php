@@ -7,6 +7,11 @@
 
 class HB_LOG{
 	
+ public function __constructor(){
+		
+		//
+	}
+	
 
  public	function init_hb_log(){
 		// this method create the table for keeping the log
@@ -32,7 +37,7 @@ class HB_LOG{
 	
 	}// end of the directory maker method
 	
-	function hb_log(){
+public	function hb_log(){
 	
 		/*
 		 * Keeping record of the site is done here
@@ -55,11 +60,9 @@ class HB_LOG{
 		$result = $wpdb->query($sql_log); // inserting the record into the  log table
 	} // end of the hb_log method
 	
-	function my_log_admin(){//defines the admin page output
-		include('hb_log_page.php');	
-	}
-	function plugin_menu(){//the page container
-		add_options_page("My Log Plugin Menu Page", "Log Menu",1, "log-menu",'my_log_admin');
+	
+public	function my_log_admin(){ //defines the admin page output
+		include_once'hb_log_page.php';	
 	}
 	//initiating plugin with this action
 }
