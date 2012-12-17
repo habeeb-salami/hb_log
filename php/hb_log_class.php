@@ -17,7 +17,7 @@ class HB_LOG{
 		// this method create the table for keeping the log
 		global $wpdb;
 		$table = $wpdb->prefix."hb_log";
-		$structure = "CREATE TABLE IF NOT EXISTS $table(id INT(9) NOT NULL AUTO_INCREMENT,	req_ip VARCHAR(50) NOT NULL, req_method VARCHAR(50) NOT NULL,req_date VARCHAR(50) NOT NULL, req_time VARCHAR(50) NOT NULL, req_refferer VARCHAR(250) NOT NULL, req_browser VARCHAR(250) NOT NULL, PRIMARY KEY (id));";
+		$structure = "CREATE TABLE IF NOT EXISTS $table(id INT(9) NOT NULL AUTO_INCREMENT,req_landing VARCHAR(50) NOT NULL,	req_ip VARCHAR(50) NOT NULL, req_method VARCHAR(50) NOT NULL,req_date VARCHAR(50) NOT NULL, req_time VARCHAR(50) NOT NULL, req_refferer VARCHAR(250) NOT NULL, req_browser VARCHAR(250) NOT NULL, PRIMARY KEY (id));";
 		$wpdb->query($structure); //create the table for the log
 	} //end of initiate function
 	
@@ -55,8 +55,8 @@ public	function hb_log(){
 		}
 	
 		$req_browser = $_SERVER['HTTP_USER_AGENT']; //getting browser type
-	
-		$sql_log = "INSERT INTO ". $wpdb->prefix."hb_log(req_ip,req_refferer, req_date,req_time, req_method, req_browser) VALUES('".$req_ip."','".$req_refferer."','".$req_date."','".$req_time."','".$req_method."','".$req_browser."')" ;  //logging query
+		$req_landing = $_SERVER['REQUEST_URI']; // the visitors heading or requested page
+		$sql_log = "INSERT INTO ". $wpdb->prefix."hb_log(req_ip,req_refferer, req_date,req_time, req_method, req_browser, req_landing) VALUES('".$req_ip."','".$req_refferer."','".$req_date."','".$req_time."','".$req_method."','".$req_browser."','".$req_landing."')" ;  //logging query
 		$result = $wpdb->query($sql_log); // inserting the record into the  log table
 	} // end of the hb_log method
 	
