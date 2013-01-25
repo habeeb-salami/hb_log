@@ -1,12 +1,77 @@
 <?php 
+//function logger(){	
 global $wpdb;
-$sql = "SELECT * FROM ".$wpdb->prefix."hb_log ";
+DEFINE('SHOWMAX',10); //Defining the maximum number of records per page
+$getTotal = "SELECT COUNT(*) FROM ".$wpdb->prefix."hb_log"; //total records query
+$totalRow = $wpdb->get_var($wpdb->prepare($getTotal)); //qurying the databse for the total records
+$curPage = isset($_GET['curPage']) ? $_GET['curPage']:0; //checking currentPage is set else set it to zero
+$startRow = $curPage * SHOWMAX;
+$sql = "SELECT * FROM ".$wpdb->prefix."hb_log LIMIT ".$startRow.",".SHOWMAX;
 $result = $wpdb->get_results($sql);
+//} //end of the logger function
 ?>
 
 <div>
 <h2> HB Log Setting and Retrieving page</h2>
 
+<?php 
+//function log_selector(){
+ //logger();
+ echo  "<p>
+<strong>Displaying:";
+ 
+echo $startRow+1; //output Starting row+1
+if($startRow+1 < $totalRow){ //checking if starting row+1 is lesser than the total row
+echo " to "	; //confirming that their are more rows to be displayed
+	if($startRow+SHOWMAX< $totalRow){
+		echo $startRow+SHOWMAX;
+	}else {
+		echo $totalRow;
+	}
+}
+ echo " of $totalRow </strong>";
+ 
+?>
+
+<!-- Creating page navigatoion system -->
+<?php 
+//creating a backlink if the current page is greater than zero
+if ($curPage>0){
+	echo '<a href="?page='.$_GET['page'].'&curPage='.($curPage-1).'">&lt;&lt;Prev</a> ';
+}else{
+	echo '&nbsp;';
+}
+//creating link to the sub-page
+if( $totalRow > SHOWMAX ){
+
+$numberOfPage = $totalRow/SHOWMAX;
+
+	if($totalRow % SHOWMAX){
+		$numberOfPage=$numberOfPage + 1;
+	}
+	
+	for($i=1; $i<$numberOfPage;$i++){
+
+		echo '<a href="?page='.$_GET['page'].'&curPage='.($numberOfPage).'"> '.$i.' </a> ';
+	}
+}
+	
+
+//create a forward link if more records exists
+if ($startRow+SHOWMAX < $totalRow){
+	echo '<a href="?page='.$_GET['page'].'&curPage='.($curPage+1).'"> Next &gt;&gt;</a>';
+}else {
+	echo '&nbsp;';
+}
+echo "</p>";
+//}//end of the log_selector() function
+
+?>
+
+<input type="submit" name="exporttocsv" value="Export To CSV" class="button-primary" />
+<?php if(isset($_POST['exporttocsv'])){
+	include 'doc-csv-gen.php';
+}?>
 <table class="wp-list-table widefat plugins" cellspacing="0">
 <thead>
 <tr>
@@ -28,9 +93,9 @@ $result = $wpdb->get_results($sql);
 <th>Reffering Page</th> 
 <th> Browser Type </th>
 </tr></tfoot>
-<?php 
-//echo $_SERVER['REQUEST_URI'];
-//print_r($result);
+<?php
+//function displayLogResult(){
+ //log_selector();
 if (isset($result)){
 foreach ($result as $results){
 echo "<tr>
@@ -42,8 +107,9 @@ echo "<tr>
 		<td>".$results->req_refferer."</td>
 		<td>".$results->req_browser."</td>
 </tr>";
-}
-}
+	}
+	}
+		//} //end of the displayLogResult() function
 ?>
 </table>
 </div>

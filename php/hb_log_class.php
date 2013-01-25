@@ -22,7 +22,7 @@ class HB_LOG{
 	} //end of initiate function
 	
 	
-	function dirmaker($thedir){
+ function dirmaker($thedir){
 		// this method create a folder based on the provided meat for the method
 		$logdir = $dir;
 		$plugin_url = trailingslashit( WP_PLUGIN_URL.'/'.dirname( plugin_basename(__FILE__))); //gets the plugin directory folder
