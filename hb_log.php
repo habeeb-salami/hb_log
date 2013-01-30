@@ -1,15 +1,16 @@
 <?php 
 /*
 Plugin Name: hb_log
-Plugin Dir: http://localhost/hb-log/
+Plugin Dir: http://www.jeempsolutions.com/wordpress-footprint/
 Description: This Plugin helps in Recording webpage visit and specifically BOTs
-Version:1.0
+Version:1.5
 Author: Salami Habeeb Alabi(+2348064620491)
 */
 
 include_once 'php/hb_log_class.php';
 $obj_hb_log = new HB_LOG();
-
+global  $wp_hbLog_root ;
+$wp_hbLog_root = plugins_url('/hb_log/');
 function my_log_admin(){
 	include 'php/hb_log_page.php';
 }

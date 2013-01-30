@@ -1,7 +1,7 @@
 <?php 
 //function logger(){	
-global $wpdb;
-DEFINE('SHOWMAX',10); //Defining the maximum number of records per page
+global $wpdb, $wp_hbLog_root;
+DEFINE('SHOWMAX',20); //Defining the maximum number of records per page
 $getTotal = "SELECT COUNT(*) FROM ".$wpdb->prefix."hb_log"; //total records query
 $totalRow = $wpdb->get_var($wpdb->prepare($getTotal)); //qurying the databse for the total records
 $curPage = isset($_GET['curPage']) ? $_GET['curPage']:0; //checking currentPage is set else set it to zero
@@ -30,48 +30,12 @@ echo " to "	; //confirming that their are more rows to be displayed
 	}
 }
  echo " of $totalRow </strong>";
- 
+
+ //$wp_hbLog_root
 ?>
-
-<!-- Creating page navigatoion system -->
-<?php 
-//creating a backlink if the current page is greater than zero
-if ($curPage>0){
-	echo '<a href="?page='.$_GET['page'].'&curPage='.($curPage-1).'">&lt;&lt;Prev</a> ';
-}else{
-	echo '&nbsp;';
-}
-//creating link to the sub-page
-if( $totalRow > SHOWMAX ){
-
-$numberOfPage = $totalRow/SHOWMAX;
-
-	if($totalRow % SHOWMAX){
-		$numberOfPage=$numberOfPage + 1;
-	}
-	
-	for($i=1; $i<$numberOfPage;$i++){
-
-		echo '<a href="?page='.$_GET['page'].'&curPage='.($numberOfPage).'"> '.$i.' </a> ';
-	}
-}
-	
-
-//create a forward link if more records exists
-if ($startRow+SHOWMAX < $totalRow){
-	echo '<a href="?page='.$_GET['page'].'&curPage='.($curPage+1).'"> Next &gt;&gt;</a>';
-}else {
-	echo '&nbsp;';
-}
-echo "</p>";
-//}//end of the log_selector() function
-
-?>
-
-<input type="submit" name="exporttocsv" value="Export To CSV" class="button-primary" />
-<?php if(isset($_POST['exporttocsv'])){
-	include 'doc-csv-gen.php';
-}?>
+<p><a class="button-primary" href="<?php echo $wp_hbLog_root; ?>php/log_to_csv.php">
+      Download CSV
+    </a></p>
 <table class="wp-list-table widefat plugins" cellspacing="0">
 <thead>
 <tr>
@@ -112,4 +76,40 @@ echo "<tr>
 		//} //end of the displayLogResult() function
 ?>
 </table>
+<!-- Creating page navigatoion system -->
+<?php 
+//creating a backlink if the current page is greater than zero
+if ($curPage>0){
+	echo '<a href="?page='.$_GET['page'].'&curPage='.($curPage-1).'">&lt;&lt;Prev</a> ';
+}else{
+	echo '&nbsp;';
+}
+//creating link to the sub-page
+if( $totalRow > SHOWMAX ){
+
+$numberOfPage = $totalRow/SHOWMAX;
+
+	if($totalRow % SHOWMAX){
+		$numberOfPage=$numberOfPage + 1;
+	}
+	
+	for($i=1; $i<$numberOfPage;$i++){
+
+		echo '<a href="?page='.$_GET['page'].'&curPage='.($numberOfPage).'"> '.$i.' </a> ';
+	}
+}
+	
+
+//create a forward link if more records exists
+if ($startRow+SHOWMAX < $totalRow){
+	echo '<a href="?page='.$_GET['page'].'&curPage='.($curPage+1).'"> Next &gt;&gt;</a>';
+}else {
+	echo '&nbsp;';
+}
+echo "</p>";
+//}//end of the log_selector() function
+
+?>
+
+
 </div>
