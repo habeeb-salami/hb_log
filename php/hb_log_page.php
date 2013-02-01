@@ -1,6 +1,6 @@
 <?php 
 //function logger(){	
-global $wpdb, $wp_hbLog_root;
+global $wpdb; //$wp_hbLog_root;
 DEFINE('SHOWMAX',20); //Defining the maximum number of records per page
 $getTotal = "SELECT COUNT(*) FROM ".$wpdb->prefix."hb_log"; //total records query
 $totalRow = $wpdb->get_var($wpdb->prepare($getTotal)); //qurying the databse for the total records
@@ -32,6 +32,7 @@ echo " to "	; //confirming that their are more rows to be displayed
  echo " of $totalRow </strong>";
 
  //$wp_hbLog_root
+ $wp_hbLog_root = plugins_url('/hb_log/');
 ?>
 <p><a class="button-primary" href="<?php echo $wp_hbLog_root; ?>php/log_to_csv.php">
       Download CSV
